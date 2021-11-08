@@ -1,0 +1,23 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+nav{
+    display: flex;
+    justify-content: space-between;
+    height: 2rem;
+    margin:  0 2rem;
+    background-color: gray;
+}
+
+.nav-links{
+    display: flex;
+    align-items: center;
+}
+.nav-item{
+    margin: 1rem;
+}
+//TODO  setup colors variable for global use
+
