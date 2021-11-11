@@ -65,7 +65,7 @@ def get_teams_ids():
 
     return ids
 
-def run():
+def get_players_run():
     ids = get_teams_ids()
 
     for i in ids:
@@ -75,4 +75,4 @@ def run():
 
     print('all players added to db')
 
-run()
+get_players_run()

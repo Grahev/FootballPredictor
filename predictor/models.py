@@ -5,13 +5,15 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-#//TODO: addshort name to team model
 class Team(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
     founded = models.IntegerField()
     logo = models.CharField(max_length=250)
+
+    class Meta:
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -20,7 +22,7 @@ class Team(models.Model):
 class Player(models.Model):
     player_id = models.IntegerField()
     name = models.CharField(max_length=50)
-    age = models.IntegerField()
+    age = models.IntegerField(null=True)
     number = models.IntegerField(null=True)
     position = models.CharField(max_length=50)
     photo = models.CharField(max_length=250)
@@ -78,14 +80,14 @@ class MatchPrediction(models.Model):
     def is_past_due(self):
         return timezone.now() < self.match.date
 
-
+#// TODO: add auto increment league id
 class League(models.Model):
-    league_id = models.IntegerField()
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, unique=True)
     admin = models.ForeignKey(User, on_delete=SET_NULL, null=True, related_name='league_admin')
     users = models.ManyToManyField(User, related_name='league_users')
     create_date = models.DateTimeField(auto_now_add=True)
-    no_of_u = models.IntegerField()
+    
 
     def __str__(self):
         return self.name

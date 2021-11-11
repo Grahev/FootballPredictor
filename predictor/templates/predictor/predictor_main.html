@@ -2,4 +2,14 @@
 
 {% block content %}
 <h1>predictor main page</h1>
+
+{% now "DATETIME_FORMAT" as current_date %}
+
+{% for l in leagues %}
+    <p>{{l.id}}</p>
+{% endfor %}
+
+<hr>
+{{leagues}}
+
 {% endblock content %}

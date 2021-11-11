@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+{% with games|first as first_object %}
+    <h1>{{first_object.matchday}}</h1>
+{% endwith %}
+<br><hr><br>
+{% for game in games %}
+
+     
+        {% if game.hTeamScore %}
+           <h2> {{game.hTeam}} {{game.hTeamScore}} vs {{game.aTeamScore}} {{game.aTeam}}</h2>
+        {% else %}
+            <h2>{{game.hTeam}} Schedule {{game.aTeam}}</h2>
+        {% endif %}
+<br>
+{% endfor %}
+
+<hr>
+<div class="pagination">
+    <span class="step-links">
+        {% if games.has_previous %}
+            <a href="?page=1">« first</a>
+            <a href="?page={{ games.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Match Day {{ games.number }} of {{ games.paginator.num_pages }}.
+        </span>
+
+        {% if games.has_next %}
+            <a href="?page={{ games.next_page_number }}">next</a>
+            <a href="?page={{ games.paginator.num_pages }}">last »</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock content %}

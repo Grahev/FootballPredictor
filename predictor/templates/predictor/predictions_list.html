@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <h1>PREDICTION LIST</h1>
+
+    {% for prediction in predictions %}
+    
+        <p>{{prediction}}</p>
+    {% endfor %}
+{% endblock content %}
