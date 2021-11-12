@@ -4,21 +4,100 @@
 {% block content %}
 
 
-{% with games|first as first_object %}
-    <h1>{{first_object.matchday}}</h1>
-{% endwith %}
-<br><hr><br>
-{% for game in games %}
+<h1 class=" display-6 text-center">Match Day:{{games.number}}</h1>
 
-     
-        {% if game.hTeamScore %}
-           <h2> {{game.hTeam}} {{game.hTeamScore}} vs {{game.aTeamScore}} {{game.aTeam}}</h2>
-        {% else %}
-            <h2>{{game.hTeam}} Schedule {{game.aTeam}}</h2>
-        {% endif %}
-<br>
-{% endfor %}
 
+
+
+<div class="accordion" id="accordionPanelsStayOpenExample">
+    {% for game in games %}
+
+    {% if game.status == 'NS' %}
+                <div class="accordion-item">
+    <h2 class="accordion-header" id="headingTwo">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo{{forloop.counter}}" aria-expanded="false" aria-controls="collapseTwo{{forloop.counter}}">
+        {{game.hTeam}} : {{game.aTeam}}
+        
+        
+        
+      </button>
+    </h2>
+    <div id="collapseTwo{{forloop.counter}}" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+       
+        <div class="card text-center">
+  <div class="card-header">
+    {{game.date.date}}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title"><img src="{{game.hTeam.logo}}" alt="" class="img-thumbnail"> vs <img src="{{game.aTeam.logo}}" alt="" class="img-thumbnail"></h5>
+    <p class="card-text"> </p>
+    <a href="#" class="btn btn-primary">PREDICT</a>
+  </div>
+  <div class="card-footer text-muted">
+    {{game.date.time}}
+  </div>
+</div>
+
+      </div>
+    </div>
+  </div>
+    {% else %}
+    <!--FULL TIME GAMES-->
+    <div class="accordion-item">
+    <h2 class="accordion-header" id="headingTwo">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo{{forloop.counter}}" aria-expanded="false" aria-controls="collapseTwo{{forloop.counter}}">
+            {{game.hTeam}} {{game.hTeamScore}} : {{game.aTeamScore}} {{game.aTeam}}
+    
+        
+        
+      </button>
+    </h2>
+    <div id="collapseTwo{{forloop.counter}}" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+       
+        <div class="card text-center">
+  <div class="card-header">
+    {{game.date}}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title"><img src="{{game.hTeam.logo}}" alt="" class="img-thumbnail"> vs <img src="{{game.aTeam.logo}}" alt="" class="img-thumbnail"></h5>
+    <p class="card-text"> <small>First goal scorer:</small> <strong>{{prediction.goalScorer.name}}</strong> </p>
+    <a href="#" class="btn btn-primary">FULL TIME</a>
+  </div>
+  <div class="card-footer text-muted">
+    {{game.matchday}}
+  </div>
+</div>
+
+      </div>
+    </div>
+  </div>
+    {% endif %}
+    
+        
+
+    {% endfor %}
+    </div>
+
+<hr>
+<!--BOOTSTRAP PAGINATION START-->
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item disabled">
+      <a class="page-link">Previous</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="?page={{ games.next_page_number }}">Next</a>
+    </li>
+  </ul>
+</nav>
+
+<!--BOOTSTRAP PAGINATION END-->
+{% comment %} #TODO: set up bootstrap pagination {% endcomment %}
 <hr>
 <div class="pagination">
     <span class="step-links">
