@@ -34,9 +34,6 @@ class Player(models.Model):
     def __str__(self):
         return f'{self.team} - {self.name}'
 
-class MatchEvents(models.Model):
-    time = models.IntegerField()
-    player = models.ForeignKey(Player, on_delete=CASCADE)
 
 
 class Match(models.Model):
@@ -52,7 +49,7 @@ class Match(models.Model):
     match_id = models.IntegerField()
 
     class Meta:
-        ordering = ['matchday']
+        ordering = ['date']
 
     def __str__(self):
         return f'MD{self.matchday} - {self.hTeam} : {self.aTeam} - {self.status}'
@@ -61,6 +58,12 @@ class Match(models.Model):
     def is_past_due(self):
         return timezone.now() > self.date
 
+class MatchEvents(models.Model):
+    match = models.ForeignKey(Match, on_delete=CASCADE)
+    team = models.ForeignKey(Team, on_delete=CASCADE)
+    time = models.IntegerField()
+    player = models.ForeignKey(Player, on_delete=CASCADE)
+    type = models.CharField(max_length=50)
 
 
 
@@ -74,11 +77,11 @@ class MatchPrediction(models.Model):
     points = models.PositiveIntegerField(blank=True, null=True)
     
     def __str__(self):
-        return f'MD:{self.match.matchday}-{self.user}-{self.match.hTeam} {self.homeTeamScore} : {self.awayTeamScore} {self.match.aTeam}'
+        return f'MD:{self.pk}-{self.match.matchday}-{self.user}-{self.match.hTeam} {self.homeTeamScore} : {self.awayTeamScore} {self.match.aTeam}'
 
     @property
     def is_past_due(self):
-        return timezone.now() < self.match.date
+        return timezone.now() > self.match.date
 
 #// TODO: add auto increment league id
 class League(models.Model):

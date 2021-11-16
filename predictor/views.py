@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
-from django.core.checks import messages
+# from django.core.checks import messages
+from django.contrib import messages
 from django.shortcuts import render
 from .models import League, User, Match, MatchPrediction
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,6 +9,9 @@ from django.views.generic import ListView, UpdateView, DeleteView
 #pagination import
 from django.core.paginator import Paginator
 
+from django.utils import timezone
+from django.http import HttpResponseRedirect
+
 
 
 #email verification imports
@@ -15,7 +19,7 @@ from django.views.generic import View
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
-from .forms import SignupForm
+from .forms import SignupForm, MatchPredictionForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -92,6 +96,7 @@ def predictor_main(request):
 @login_required(login_url='predictor:login')
 def matches_page(request):
     matches = Match.objects.all().order_by('id')
+    ns_matches = Match.objects.filter(status='NS')
     p = Paginator(matches,10)
     page = request.GET.get('page')
     games = p.get_page(page)
@@ -102,11 +107,92 @@ def matches_page(request):
     return render(request, 'predictor/matches.html', context)
 
 
+
+
 class MatchPredictionListView(LoginRequiredMixin,ListView):
     model = MatchPrediction
     template_name = "predictor/predictions_list.html"
     context_object_name = 'predictions'
-    # ordering = ['-date_created']
+    
     
     def get_queryset(self):
-        return MatchPrediction.objects.filter(user = self.request.user)
+        return MatchPrediction.objects.filter(user = self.request.user).order_by('-match__date')
+
+
+
+def match_prediction(request,pk):
+    match = Match.objects.get(id=pk)
+    form = MatchPredictionForm()
+    md = match.matchday
+    hteam = match.hTeam
+    ateam = match.aTeam
+    form = MatchPredictionForm(ht=hteam,at=ateam)
+    m_id = match.match_id
+    print(m_id)
+
+
+    print(match.date)
+    print(timezone.now())
+    if match.date < timezone.now():
+        print('matchday is smaller')
+    else:
+        print('time now is bigger')
+
+
+    if request.method == 'POST':
+        pred = MatchPrediction.objects.filter(user=request.user).filter(match__in=Match.objects.filter(id=pk)).exists()
+        print(pred)
+        print('post request')
+        form = MatchPredictionForm(request.POST,ht=hteam,at=ateam)
+        if form.is_valid():
+            if pred == True:
+                messages.error(request,'Prediction for this match alerady exists, please make prediction for other match.')
+                return HttpResponseRedirect(request.path_info)
+            if MatchPrediction.objects.filter(user = request.user).filter(match__in=Match.objects.filter(matchday=md)).count() >= 3:
+                print('if statment')
+                # print(MatchPrediction.objects.filter(user = request.user).filter(match__in=Match.objects.filter(matchday=md)).count())
+                messages.error(request,'You predict 3 games already, delete your prediction to make new for this matchday.')
+                return HttpResponseRedirect(request.path_info)
+            if match.date < timezone.now():
+                messages.error(request,'Prediction match alredy started and can NOT be added on or edited. Please do prediction for other match.')
+                return HttpResponseRedirect(request.path_info)
+
+            print(form.cleaned_data)
+            homeTeamScore = form.cleaned_data['homeTeamScore']
+            awayTeamScore = form.cleaned_data['awayTeamScore']
+            goal = form.cleaned_data['goalScorer']
+            user = request.user.username
+            print(goal)
+            u = User.objects.get(username=user)
+            MatchPrediction.objects.create(
+                match = match,
+                homeTeamScore=homeTeamScore,
+                awayTeamScore=awayTeamScore,
+                user = u,
+                goalScorer = goal,
+            )
+            print('new prediction created')
+            return redirect("/")
+
+
+    context = {
+        'match':match,
+        'form':form,
+    }
+    return render(request, 'predictor/match_prediction.html', context)
+
+
+class MatchPredictionDeleteView(DeleteView):
+    model = MatchPrediction
+    template_name = "predictor/prediction_delete.html"
+    success_url = "/predictions/"
+
+class MatchPredictionUpdateView(UpdateView):
+
+    model = MatchPrediction
+    template_name = 'predictor/prediction_edit.html'
+    context_object_name = 'prediction'
+    form = MatchPredictionForm()
+    model = MatchPrediction
+    fields = ['homeTeamScore','awayTeamScore','goalScorer']
+    success_url = '/predictions/'

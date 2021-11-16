@@ -11,9 +11,9 @@
     
         <div class="accordion-item">
     <h2 class="accordion-header" id="headingTwo">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo{{forloop.counter}}" aria-expanded="false" aria-controls="collapseTwo{{forloop.counter}}">
+      <div class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo{{forloop.counter}}" aria-expanded="false" aria-controls="collapseTwo{{forloop.counter}}">
         {{prediction.match.hTeam}} {{prediction.match.hTeamScore}} : {{prediction.match.aTeamScore}} {{prediction.match.aTeam}}
-      </button>
+      </div>
     </h2>
     <div id="collapseTwo{{forloop.counter}}" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
       <div class="accordion-body">
@@ -25,7 +25,16 @@
   <div class="card-body">
     <h5 class="card-title">{{prediction.match.hTeam}} {{prediction.homeTeamScore}} : {{prediction.awayTeamScore}} {{prediction.match.aTeam}}</h5>
     <p class="card-text"> <small>First goal scorer:</small> <strong>{{prediction.goalScorer.name}}</strong> </p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+    {% if prediction.is_past_due %}
+      <p>Full Time</p>
+      <p>{{prediction.match.hTeam}} {{prediction.match.hTeamScore}} : {{prediction.match.aTeamScore}} {{prediction.match.aTeam}}</p>
+      <p>First goal scorer: {{prediction.match.goalScorers}}</p>
+       
+    {% else %}
+    <a href="/predictions/{{prediction.pk}}/edit" class="btn btn-primary">Edit</a>
+    <a href="/predictions/{{prediction.pk}}/delete" class="btn btn-danger">Delete</a>
+    {% endif %}
+    
   </div>
   <div class="card-footer text-muted">
     Points: {{prediction.points}}

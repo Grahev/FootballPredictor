@@ -6,6 +6,10 @@
 
 <h1 class=" display-6 text-center">Match Day:{{games.number}}</h1>
 
+{% with games.0 as first_game %}
+  <h1 class=" display-6 text-center">{{first_game.matchday}}</h1>
+{% endwith %}
+
 
 
 
@@ -32,7 +36,7 @@
   <div class="card-body">
     <h5 class="card-title"><img src="{{game.hTeam.logo}}" alt="" class="img-thumbnail"> vs <img src="{{game.aTeam.logo}}" alt="" class="img-thumbnail"></h5>
     <p class="card-text"> </p>
-    <a href="#" class="btn btn-primary">PREDICT</a>
+    <a href="/{{game.pk}}" class="btn btn-primary">PREDICT</a>
   </div>
   <div class="card-footer text-muted">
     {{game.date.time}}
@@ -64,6 +68,7 @@
     <h5 class="card-title"><img src="{{game.hTeam.logo}}" alt="" class="img-thumbnail"> vs <img src="{{game.aTeam.logo}}" alt="" class="img-thumbnail"></h5>
     <p class="card-text"> <small>First goal scorer:</small> <strong>{{prediction.goalScorer.name}}</strong> </p>
     <a href="#" class="btn btn-primary">FULL TIME</a>
+    <a href="/{{game.pk}}">edit</a>
   </div>
   <div class="card-footer text-muted">
     {{game.matchday}}
