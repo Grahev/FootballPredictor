@@ -12,6 +12,11 @@ from .views import (
     match_prediction,
     MatchPredictionDeleteView,
     MatchPredictionUpdateView,
+    LeagueCreateView,
+    league_view,
+    league_details,
+    join_league,
+    join_league_pin,
     )
 
 from django.contrib.auth.views import LoginView
@@ -27,4 +32,9 @@ urlpatterns = [
     path('<int:pk>/', match_prediction),
     path('predictions/<int:pk>/delete', MatchPredictionDeleteView.as_view(), name='prediction_delete'),
     path('predictions/<int:pk>/edit', MatchPredictionUpdateView.as_view(), name='prediction_update'),
+    path('leagues/create', LeagueCreateView.as_view(), name='create_league'),
+    path('leagues/', league_view, name='leagues'),
+    path('leagues/<int:pk>/', league_details, name='league_details'),
+    path('leagues/join', join_league, name='join_league'),
+    path('leagues/join/<int:pk>', join_league_pin, name='join_league'),
 ]

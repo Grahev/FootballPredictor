@@ -4,10 +4,9 @@
 {% block content %}
 
 
-<h1 class=" display-6 text-center">Match Day:{{games.number}}</h1>
 
 {% with games.0 as first_game %}
-  <h1 class=" display-6 text-center">{{first_game.matchday}}</h1>
+  <h1 class=" display-6 text-center">Match Day: {{first_game.md}}</h1>
 {% endwith %}
 
 

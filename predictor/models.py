@@ -58,6 +58,11 @@ class Match(models.Model):
     def is_past_due(self):
         return timezone.now() > self.date
 
+    @property
+    def md(self):
+        day = self.matchday.split('-')[-1]
+        return day
+
 class MatchEvents(models.Model):
     match = models.ForeignKey(Match, on_delete=CASCADE)
     team = models.ForeignKey(Team, on_delete=CASCADE)
@@ -87,9 +92,11 @@ class MatchPrediction(models.Model):
 class League(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, unique=True)
+    pin = models.IntegerField(max_length=6)
     admin = models.ForeignKey(User, on_delete=SET_NULL, null=True, related_name='league_admin')
     users = models.ManyToManyField(User, related_name='league_users')
     create_date = models.DateTimeField(auto_now_add=True)
+    rules = models.TextField(max_length=500, blank=True)
     
 
     def __str__(self):

@@ -1,7 +1,7 @@
 from django import forms  
 from django.contrib.auth.forms import UserCreationForm  
 from django.contrib.auth.models import User  
-from. models import Player, Team, Match, MatchPrediction
+from. models import Player, Team, Match, MatchPrediction, League
   
 class SignupForm(UserCreationForm):  
     email = forms.EmailField(max_length=200, help_text='Required')  
@@ -23,3 +23,12 @@ class MatchPredictionForm(forms.ModelForm):
         self.fields['goalScorer'].queryset= Player.objects.filter(team__in=[ht,at])
         self.fields['homeTeamScore'].label = ht
         self.fields['awayTeamScore'].label = at
+
+class JoinLeagueForm(forms.ModelForm):
+
+    class Meta:
+        model = League
+        fields = ['name', 'pin']
+
+class LeagueJoinPinForm(forms.Form):
+    pin = forms.IntegerField()

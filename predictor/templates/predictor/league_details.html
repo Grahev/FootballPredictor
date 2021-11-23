@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>League detail view</h1>
+{{league.name}}
+
+{% for user in table %}
+    <p>{{user.name}} points: {{user.points}}</p>
+
+{% endfor %}
+
+{% endblock content %}

@@ -1,15 +1,18 @@
 from django.contrib.auth.models import User
 # from django.core.checks import messages
 from django.contrib import messages
+from django.forms import fields
 from django.shortcuts import render
+from django.views.generic.edit import CreateView
 from .models import League, User, Match, MatchPrediction
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, UpdateView, DeleteView
+from django.views.generic import ListView, UpdateView, DeleteView, DetailView
 
 #pagination import
 from django.core.paginator import Paginator
 
 from django.utils import timezone
+import datetime
 from django.http import HttpResponseRedirect
 
 
@@ -19,7 +22,7 @@ from django.views.generic import View
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
-from .forms import SignupForm, MatchPredictionForm
+from .forms import SignupForm, MatchPredictionForm, LeagueJoinPinForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -172,7 +175,7 @@ def match_prediction(request,pk):
                 goalScorer = goal,
             )
             print('new prediction created')
-            return redirect("/")
+            return redirect("/matches")
 
 
     context = {
@@ -196,3 +199,104 @@ class MatchPredictionUpdateView(UpdateView):
     model = MatchPrediction
     fields = ['homeTeamScore','awayTeamScore','goalScorer']
     success_url = '/predictions/'
+
+
+class LeagueCreateView(CreateView):
+    model = League
+    template_name = 'predictor/league_create.html'
+    fields = ['name','pin','rules']
+    success_url = '/leagues/'
+
+
+def league_view(request):
+    """view for list of users leagues"""
+    user = request.user.username
+    leagues = League.objects.filter(users=User.objects.get(username=user))
+    context = {
+        'leagues':leagues,
+    }
+    return render(request, 'predictor/league.html', context)
+
+def league_details(request,pk):
+    league = League.objects.get(id=pk)
+    table = []
+    create_date = league.create_date
+
+    #create dict with user points
+    for user in league.users.iterator():  
+        points_dict = {}
+        user_points = 0
+        #print(user)
+        predictions = MatchPrediction.objects.filter(user=user).filter(match__date__gte = create_date)
+        print(predictions)
+        for match in predictions.iterator():
+            if match.points:
+                print(match.points)
+                user_points += match.points
+        print(f'{user} points:{user_points}')
+        points_dict = {
+            'name': user.username,
+            'points' : user_points
+            }
+
+        table.append(points_dict)
+    
+    #sort table by points
+    points_table= sorted(table, key=lambda d: d['points'], reverse=True)
+    
+    context = {
+        'league': league,
+        'table' : points_table,
+    }
+
+    return render(request,'predictor/league_details.html', context)
+
+
+def join_league(request):
+    print(request.POST)
+    leagues = League.objects.all()
+    
+
+    if request.method == 'POST':
+        form = request.POST
+        try:
+            league = League.objects.get(name=form['name'])
+            print(league.admin)
+        except:
+            league = ''
+        
+   
+
+
+    context = {
+        'leagues':leagues
+    }
+    return render(request,'predictor/join_league.html', context)
+
+def join_league_pin(request, pk):
+    league = League.objects.get(id=pk)
+    form = LeagueJoinPinForm()
+    user = request.user
+    print(league)
+
+    if request.method == 'POST':
+        form = LeagueJoinPinForm(request.POST)
+        if form.is_valid():
+            pin = form.cleaned_data['pin']
+            print(f'pin: {type(pin)}')
+            print(f'league pin:{league.pin}')
+            if pin == league.pin:
+                print('match')
+                league.users.add(user)
+                messages.info(request,f'You join {league.name}.')
+                return redirect('/leagues')
+            else:
+                print('pin not match')
+
+    context = {
+        'league':league,
+        'form': form
+    }
+    return render(request,'predictor/join_league_confirm.html',context)
+
+#TODO: create leave league view
