@@ -15,6 +15,8 @@ from django.utils import timezone
 import datetime
 from django.http import HttpResponseRedirect
 
+#api import
+import config
 
 
 #email verification imports
@@ -100,7 +102,7 @@ def predictor_main(request):
 def matches_page(request):
     matches = Match.objects.all().order_by('id')
     ns_matches = Match.objects.filter(status='NS')
-    p = Paginator(matches,10)
+    p = Paginator(ns_matches,10)
     page = request.GET.get('page')
     games = p.get_page(page)
     context = {
@@ -131,6 +133,7 @@ def match_prediction(request,pk):
     ateam = match.aTeam
     form = MatchPredictionForm(ht=hteam,at=ateam)
     m_id = match.match_id
+    key = config.key
     print(m_id)
 
 
@@ -181,6 +184,7 @@ def match_prediction(request,pk):
     context = {
         'match':match,
         'form':form,
+        'key':key,
     }
     return render(request, 'predictor/match_prediction.html', context)
 
@@ -199,6 +203,14 @@ class MatchPredictionUpdateView(UpdateView):
     model = MatchPrediction
     fields = ['homeTeamScore','awayTeamScore','goalScorer']
     success_url = '/predictions/'
+
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['key'] = config.key
+        print(context)
+        return context
 
 
 class LeagueCreateView(CreateView):
@@ -300,3 +312,30 @@ def join_league_pin(request, pk):
     return render(request,'predictor/join_league_confirm.html',context)
 
 #TODO: create leave league view
+
+
+
+
+def leave_league(request,pk):
+    league = League.objects.get(id=pk)
+    user = request.user
+
+    print(league)
+
+    context = {
+        'league': league
+    }
+
+    return render(request,'predictor/leave_league.html', context)
+
+def leave_league_confirm(request,pk):
+    league = League.objects.get(id=pk)
+    user = request.user
+
+    if league.name == 'MASTER LEAGUE':
+        messages.error(request, 'You cant leave MASTER LEAGUE')
+        return redirect('/leagues')
+    else:
+        league.users.remove(user)
+        messages.info(request,f'You leave {league.name}.')
+        return redirect('/leagues')

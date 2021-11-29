@@ -6,9 +6,9 @@ import time
 
 
 def get_all_games():
-    """get players for all teams"""
+    """get all games"""
 
-    #url = 'https://v3.football.api-sports.io/fixtures?league=39&season=2021'
+    url = 'https://v3.football.api-sports.io/fixtures?league=39&season=2021'
     # url = f'https://v3.football.api-sports.io/players/squads?team={team_id}'
     
     payload={}
@@ -17,18 +17,18 @@ def get_all_games():
       'x-rapidapi-host': config.host
     }
 
-    # r = requests.request("GET", url, headers=headers, data=payload)
-    # print(f'request status code:{r.status_code}')
-    file = r'C:\Users\kgrac\Desktop\V2 Football\FootballPredictor\my temp files\all_matches.json'
+    r = requests.request("GET", url, headers=headers, data=payload)
+    print(f'request status code:{r.status_code}')
+    # file = r'C:\Users\kgrac\Desktop\V2 Football\FootballPredictor\my temp files\all_matches.json'
 
-    # data = r.json()
+    data = r.json()
 
         # Opening JSON file
-    f = open(file)
+    # f = open(file)
  
     # returns JSON object as
     # a dictionary
-    data = json.load(f) 
+    # data = json.load(data) 
     response = data['response']
     match= response[0]['fixture']
     teams = response[0]['teams']

@@ -41,6 +41,7 @@ def get_teams():
     # a dictionary
     # data = json.load(f) 
     response = data['response']
+    print(response)
 
     for i in response:
         id = i['team']['id']

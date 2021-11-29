@@ -45,7 +45,7 @@ class Match(models.Model):
     status = models.CharField(max_length=20)
     hTeamScore = models.IntegerField(blank=True, null=True)
     aTeamScore = models.IntegerField(blank=True, null=True)
-    goalScorers = models.CharField(max_length=300)
+    goalScorers = models.ManyToManyField(Player, related_name='goal_scorers',blank=True,null=True)
     match_id = models.IntegerField()
 
     class Meta:

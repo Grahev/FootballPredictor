@@ -6,10 +6,12 @@ from .get_all_games import get_all_games
 def run():
     get_teams()
     print('teams added')
-    get_players_run()
-    print("players added")
+    
     get_all_games()
     print("all matches added")
+
+    get_players_run()
+    print("players added")
     print("FINISH")
 
 

@@ -17,6 +17,8 @@ from .views import (
     league_details,
     join_league,
     join_league_pin,
+    leave_league,
+    leave_league_confirm,
     )
 
 from django.contrib.auth.views import LoginView
@@ -37,4 +39,6 @@ urlpatterns = [
     path('leagues/<int:pk>/', league_details, name='league_details'),
     path('leagues/join', join_league, name='join_league'),
     path('leagues/join/<int:pk>', join_league_pin, name='join_league'),
+    path('leagues/leave/<int:pk>', leave_league, name='leave_league'),
+    path('leagues/leave/confirm/<int:pk>', leave_league_confirm, name='leave_league_confirm'),
 ]
