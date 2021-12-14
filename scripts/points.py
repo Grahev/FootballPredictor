@@ -62,18 +62,3 @@ def run():
     print(f'points: {points} - {p} updated')
 
     
-    
-    
-    
-    
-    
-    
-    
-    
-    # print(prediction.match)
-    # for goal in goal_scorers:
-    #   print(f'{goal.player.name} minute: {goal.time}')
-
-  print(unchacked_predictions)
-
-    

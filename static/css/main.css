@@ -1,23 +1,10 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
-nav{
-    display: flex;
-    justify-content: space-between;
-    height: 2rem;
-    margin:  0 2rem;
-    background-color: gray;
+.prediction{
+    width: 50%;
+    max-width: 450px;
+    background-color: rgba(59, 130, 246, 0.5);
 }
-
-.nav-links{
-    display: flex;
-    align-items: center;
-}
-.nav-item{
-    margin: 1rem;
+.prediction a{
+    text-decoration: none;
 }
 //TODO  setup colors variable for global use
-

@@ -88,7 +88,7 @@ class MatchPrediction(models.Model):
     def is_past_due(self):
         return timezone.now() > self.match.date
 
-#// TODO: add auto increment league id
+
 class League(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, unique=True)

@@ -84,26 +84,7 @@
     {% endfor %}
     </div>
 
-<hr>
-<!--BOOTSTRAP PAGINATION START-->
-<nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-center">
-    <li class="page-item disabled">
-      <a class="page-link">Previous</a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="?page={{ games.next_page_number }}">Next</a>
-    </li>
-  </ul>
-</nav>
-
-<!--BOOTSTRAP PAGINATION END-->
-{% comment %} #TODO: set up bootstrap pagination {% endcomment %}
-<hr>
-<div class="pagination">
+<div class="pagination d-flex justify-content-center">
     <span class="step-links">
         {% if games.has_previous %}
             <a href="?page=1">« first</a>
