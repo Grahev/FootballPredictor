@@ -208,7 +208,8 @@ class MatchPredictionUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['key'] = config.key
+        # context['key'] =  config.key
+        context['key'] = os.environ.get('key')
         print(context)
         return context
 
