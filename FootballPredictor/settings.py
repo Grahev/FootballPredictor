@@ -27,7 +27,10 @@ SECRET_KEY = 'django-insecure-pl#wegdaq=6gjs^6&f7#q2%0j%6v=2la3%oy%v3d6cnb$&7k#9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'https://scoresonthedoors.herokuapp.com/',
+    '127.0.0.1',
+]
 
 
 # Application definition
