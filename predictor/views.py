@@ -16,7 +16,8 @@ import datetime
 from django.http import HttpResponseRedirect
 
 #api import
-import config
+# import config
+import os
 
 
 #email verification imports
@@ -133,7 +134,8 @@ def match_prediction(request,pk):
     ateam = match.aTeam
     form = MatchPredictionForm(ht=hteam,at=ateam)
     m_id = match.match_id
-    key = config.key
+    # key = config.key
+    key = os.environ.get('key')
     print(m_id)
 
 
