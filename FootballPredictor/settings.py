@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import django_heroku
+from boto.s3.connection import S3Connection
 # import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -157,20 +158,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #email setup
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'assafootball2021@gmail.com'
-EMAIL_HOST_USER = config.EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = config.EMAIL_HOST_PASSWORD
-EMAIL_PORT = 587
-
-
 # EMAIL_USE_TLS = True
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_HOST_USER = 'assafootball2021@gmail.com'
-# EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
-# EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+# EMAIL_HOST_USER = config.EMAIL_HOST_USER
+# EMAIL_HOST_PASSWORD = config.EMAIL_HOST_PASSWORD
 # EMAIL_PORT = 587
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'assafootball2021@gmail.com'
+EMAIL_HOST_USER = S3Connection(os.environ['EMAIL_HOST_USER'])
+EMAIL_HOST_PASSWORD = S3Connection(os.environ['EMAIL_HOST_PASSWORD'])
+EMAIL_PORT = 587
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
