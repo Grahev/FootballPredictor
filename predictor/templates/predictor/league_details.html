@@ -1,12 +1,28 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>League detail view</h1>
-{{league.name}}
+<h1 class="text-center mt-5 mb-3">{{league.name}}</h1>
 
-{% for user in table %}
-    <p>{{user.name}} points: {{user.points}}</p>
 
-{% endfor %}
+<div class="container-sm">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Points</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for user in table %}
+          <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{user.name}}</td>
+            <td>{{user.points}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
 
 {% endblock content %}

@@ -18,7 +18,7 @@
     {% if game.status == 'NS' %}
                 <div class="accordion-item">
     <h2 class="accordion-header" id="headingTwo">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo{{forloop.counter}}" aria-expanded="false" aria-controls="collapseTwo{{forloop.counter}}">
+      <button class="accordion-button collapsed bg-primary text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo{{forloop.counter}}" aria-expanded="false" aria-controls="collapseTwo{{forloop.counter}}">
         {{game.hTeam}} : {{game.aTeam}}
         
         
@@ -84,7 +84,7 @@
     {% endfor %}
     </div>
 
-<div class="pagination d-flex justify-content-center">
+{% comment %} <div class="pagination d-flex justify-content-center">
     <span class="step-links">
         {% if games.has_previous %}
             <a href="?page=1">« first</a>
@@ -100,6 +100,6 @@
             <a href="?page={{ games.paginator.num_pages }}">last »</a>
         {% endif %}
     </span>
-</div>
+</div> {% endcomment %}
 
 {% endblock content %}
