@@ -90,7 +90,7 @@ def logout_view(request):
     logout(request)
     return redirect('/')
 
-@login_required(login_url='predictor:login')
+# @login_required(login_url='predictor:login')
 def predictor_main(request):
     leagues = League.objects.all().filter(admin= User.objects.get(username="admin") )
     context = {
@@ -103,11 +103,15 @@ def predictor_main(request):
 def matches_page(request):
     matches = Match.objects.all().order_by('id')
     ns_matches = Match.objects.filter(status='NS')
+    md = ns_matches.first()
+    upcoming_matches = ns_matches.filter(matchday=md.matchday)
+    print(upcoming_matches)
     p = Paginator(ns_matches,10)
     page = request.GET.get('page')
     games = p.get_page(page)
     context = {
-        'games' : games,
+        # 'games' : games,
+        'games' : upcoming_matches,
     }
 
     return render(request, 'predictor/matches.html', context)

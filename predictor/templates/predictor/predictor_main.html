@@ -1,11 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>WELCOME</h1>
 
-<h2>
-    Welcome to Sccores On The Doors football predictor portal.
+{% if request.user.is_authenticated %}
+
+<h2 class="text-center mt-5">
+    <a href="{% url 'predictor:matches' %}">GO TO CURRENT GAMES</a>
 </h2>
-<p>Please <a href="#">login</a> if you have account if not <a href="#">sign up here</a></p>
+
+{% else %}
+<h2 class="text-center mt-5">
+    Welcome to Scores On The Doors football predictor portal.
+</h2>
+<p class="text-center">Please <a href="{% url 'predictor:login' %}">login</a> if you have account if not <a href="{% url 'predictor:signup' %}">sign up here</a></p>
+
+{% endif %}
+
+
 
 {% endblock content %}
