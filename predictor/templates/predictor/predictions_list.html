@@ -5,8 +5,104 @@
     <h1 class="text-center my-3">PREDICTION LIST</h1>
 
     
-    
     <div class="accordion" id="accordionPanelsStayOpenExample">
+      {% for prediction in predictions %}
+
+      {% if prediction.is_past_due %}
+      
+          <div class="accordion-item ">
+      <h2 class="accordion-header" id="headingTwo">
+        <div class="accordion-button collapsed bg-warning" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo{{forloop.counter}}" aria-expanded="false" aria-controls="collapseTwo{{forloop.counter}}">
+          <p class="mb-0">{{prediction.match.hTeam}} {{prediction.match.hTeamScore}} : {{prediction.match.aTeamScore}} {{prediction.match.aTeam}}</p><small class="mb-0 ms-2">Points: {{prediction.points}}</small>
+        </div>
+      </h2>
+      <div id="collapseTwo{{forloop.counter}}" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+         
+          <div class="card text-center">
+    <div class="card-header">
+      Prediction
+    </div>
+    <div class="card-body">
+      {% if prediction.checked %}
+      <h5 class="card-title">{{prediction.match.hTeam}} {{prediction.homeTeamScore}} : {{prediction.awayTeamScore}} {{prediction.match.aTeam}}</h5>
+      <p class="card-text"> <small>First goal scorer:</small> <strong>{{prediction.goalScorer.name}}</strong> </p>
+    
+        <p>Full Time</p>
+        <p>{{prediction.match.hTeam}} {{prediction.match.hTeamScore}} : {{prediction.match.aTeamScore}} {{prediction.match.aTeam}}</p>
+        <p>First goal scorer: {{prediction.match.goalScorers.first.name}}</p>
+      {% else %}
+      <h5 class="card-title">{{prediction.match.hTeam}} {{prediction.homeTeamScore}} : {{prediction.awayTeamScore}} {{prediction.match.aTeam}}</h5>
+      <p class="card-text"> <small>First goal scorer:</small> <strong>{{prediction.goalScorer.name}}</strong> </p>
+      <p>pending</p>
+      {% endif %}
+      
+         
+      {% else %}
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTwo">
+          <div class="accordion-button collapsed bg-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo{{forloop.counter}}" aria-expanded="false" aria-controls="collapseTwo{{forloop.counter}}">
+            <p class="mb-0">{{prediction.match.hTeam}} : {{prediction.match.aTeam}}</p>
+          </div>
+        </h2>
+        <div id="collapseTwo{{forloop.counter}}" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+           
+            <div class="card text-center">
+      <div class="card-header">
+        Prediction
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{prediction.match.hTeam}} {{prediction.homeTeamScore}} : {{prediction.awayTeamScore}} {{prediction.match.aTeam}}</h5>
+        <p class="card-text"> <small>First goal scorer:</small> <strong>{{prediction.goalScorer.name}}</strong> </p>
+      
+          {% comment %} <p>Full Time</p>
+          <p>{{prediction.match.hTeam}} {{prediction.match.hTeamScore}} : {{prediction.match.aTeamScore}} {{prediction.match.aTeam}}</p>
+          <p>First goal scorer: {{prediction.match.goalScorers.first.name}}</p> {% endcomment %}
+      <a href="/predictions/{{prediction.pk}}/edit" class="btn btn-primary">Edit</a>
+      <a href="/predictions/{{prediction.pk}}/delete" class="btn btn-danger">Delete</a>
+      {% endif %}
+      
+    </div>
+    <div class="card-footer text-muted">
+      Points: {{prediction.points}}
+    </div>
+  </div>
+  
+        </div>
+      </div>
+    </div>
+  
+      {% endfor %}
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    {% comment %} <div class="accordion" id="accordionPanelsStayOpenExample">
     {% for prediction in predictions %}
     
         <div class="accordion-item">
@@ -28,7 +124,7 @@
     {% if prediction.is_past_due %}
       <p>Full Time</p>
       <p>{{prediction.match.hTeam}} {{prediction.match.hTeamScore}} : {{prediction.match.aTeamScore}} {{prediction.match.aTeam}}</p>
-      <p>First goal scorer: {{prediction.match.goalScorers}}</p>
+      <p>First goal scorer: {{prediction.match.goalScorers.first.name}}</p>
        
     {% else %}
     <a href="/predictions/{{prediction.pk}}/edit" class="btn btn-primary">Edit</a>
@@ -46,11 +142,11 @@
   </div>
 
     {% endfor %}
-    </div>
+    </div> {% endcomment %}
 
 
 
-    {% for prediction in predictions %}
+    {% comment %} {% for prediction in predictions %}
       {% if not prediction.is_past_due %}
         <div class="prediction border border-1 mx-auto">
           <a href="#" class="link-dark">
@@ -64,36 +160,10 @@
           </div>
         </a>
         </div>
-
-
-
-
-      {% comment %} <div class="container border border-1">
-        <div class="row">
-          <div class="col-5 text-center"><img class="m-2" src="{{prediction.match.hTeam.logo}}" style="height:30px" alt=""></div>
-          <div class="col-2"></div>
-          <div class="col-5 text-center"><img class="m-2" src="{{prediction.match.aTeam.logo}}" style="height:30px" alt=""></div>
-        </div>
-        <div class="row m-2">
-          <div class="col-5 bg-primary text-center"><p>{{prediction.match.hTeam}}</p></div>
-          <div class="col-2 text-center"><p>{{prediction.match.date.date}}</p></div>
-          <div class="col-5 bg-secondary text-center">{{prediction.match.aTeam}}</div>
-        </div>
-        <div class="row m-2">
-          <div class="col-5 text-center">
-            <a href="/predictions/{{prediction.pk}}/edit" class="btn btn-primary">Edit</a>
-          </div>
-          <div class="col-2"></div>
-          <div class="col-5 text-center">
-            <a href="/predictions/{{prediction.pk}}/delete" class="btn btn-danger">Delete</a>
-          </div>
-        </div>
-      </div>
-        {{prediction}} {% endcomment %}
       {% else %}
 
       {% endif %}
     
-    {% endfor %}
+    {% endfor %} {% endcomment %}
    
 {% endblock content %}

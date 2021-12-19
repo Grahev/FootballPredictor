@@ -27,23 +27,27 @@ def prediction_one_x_two(prediction):
 
 def run():
   unchacked_predictions = MatchPrediction.objects.filter(checked=False)
+  print(unchacked_predictions)
 
   for prediction in unchacked_predictions:
     points = 0
     goal_scorers = MatchEvents.objects.filter(match=prediction.match).order_by('time')
+    print(goal_scorers)
    
-    
-    if goal_scorers[0].player.name == prediction.goalScorer.name:
-      points+=3
-      print('3 points for correct first goalscorer')
-    else:
-      for goal in goal_scorers:
-        if goal.player.name == prediction.goalScorer.name:
-          print('1 point for anytime goalscorer')
-          points +=1
-          break
-        else:
-          continue
+    try:
+      if goal_scorers[0].player.name == prediction.goalScorer.name:
+        points+=3
+        print('3 points for correct first goalscorer')
+      else:
+        for goal in goal_scorers:
+          if goal.player.name == prediction.goalScorer.name:
+            print('1 point for anytime goalscorer')
+            points +=1
+            break
+          else:
+            continue
+    except:
+      points += 0
 
     if prediction.homeTeamScore == prediction.match.hTeamScore and prediction.awayTeamScore == prediction.match.aTeamScore:
       points +=3
