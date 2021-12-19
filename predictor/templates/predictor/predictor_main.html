@@ -1,15 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>predictor main page</h1>
+<h1>WELCOME</h1>
 
-{% now "DATETIME_FORMAT" as current_date %}
-
-{% for l in leagues %}
-    <p>{{l}}</p>
-{% endfor %}
-
-<hr>
-{{leagues}}
+<h2>
+    Welcome to Sccores On The Doors football predictor portal.
+</h2>
+<p>Please <a href="#">login</a> if you have account if not <a href="#">sign up here</a></p>
 
 {% endblock content %}

@@ -65,7 +65,7 @@ def signup(request):
                         mail_subject, message, to=[to_email]  
             )  
             email.send()  
-            return HttpResponse('Please confirm your email address to complete the registration')  
+            return HttpResponse('Please go to your email and confirm your email address by click activation link from email to complete the registration')  
     else:  
         form = SignupForm()  
     return render(request, 'signup.html', {'form': form})  

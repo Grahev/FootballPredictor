@@ -3,7 +3,6 @@ import config
 from predictor.models import Player, Team
 import json
 import time
-import os
 
 
 def get_players(team_id):
@@ -14,8 +13,8 @@ def get_players(team_id):
     
     payload={}
     headers = {
-      'x-rapidapi-key': os.environ.get('API_KEY','dev default value'),
-      'x-rapidapi-host': os.environ.get('API_HOST','dev default value')
+      'x-rapidapi-key': config.key,
+      'x-rapidapi-host': config.host
     }
 
     r = requests.request("GET", url, headers=headers, data=payload)
