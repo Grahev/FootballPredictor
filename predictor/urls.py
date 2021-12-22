@@ -19,6 +19,7 @@ from .views import (
     join_league_pin,
     leave_league,
     leave_league_confirm,
+    user_predictions_list,
     )
 
 from django.contrib.auth.views import LoginView
@@ -27,6 +28,7 @@ urlpatterns = [
     path('', predictor_main, name='predictor_main'),
     path('matches/', matches_page, name='matches'),
     path('predictions/', MatchPredictionListView.as_view(), name='predictions'),
+    path('predictions/<str:user>/', user_predictions_list, name='user_prediction_list'),
     path('signup/', views.signup, name='signup'),
     path('activate/<uidb64>/<token>', activate.as_view(), name='activate'), 
     path('login/', LoginView.as_view(), name="login"),

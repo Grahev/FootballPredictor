@@ -318,8 +318,6 @@ def join_league_pin(request, pk):
     }
     return render(request,'predictor/join_league_confirm.html',context)
 
-#TODO: create leave league view
-
 
 
 
@@ -346,3 +344,10 @@ def leave_league_confirm(request,pk):
         league.users.remove(user)
         messages.info(request,f'You leave {league.name}.')
         return redirect('/leagues')
+
+def user_predictions_list(request, user):
+    predictions = MatchPrediction.objects.filter(user__username = user).order_by('-match__status','-match__matchday')
+    context = {
+        'predictions': predictions
+    }
+    return render(request, 'predictor/user_predictions_list.html', context)
