@@ -28,6 +28,10 @@
           <small>Created: {{league.create_date}}</small>
           <small>PIN: {{league.pin}}</small>
       </div>
+      <div class="info mt-3">
+        <p class="">League info/rules:</p>
+        <small>{{league.rules|linebreaks}}</small>
+      </div>
 </div>
 
 {% endblock content %}
