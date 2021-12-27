@@ -66,7 +66,10 @@ class Match(models.Model):
     @property
     def first_goal(self):
         first = MatchEvents.objects.filter(match=self).first()
-        f = first.player.name
+        try:
+            f = first.player.name
+        except:
+            f = ""
         return f
 
 class MatchEvents(models.Model):
