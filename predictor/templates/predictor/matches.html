@@ -15,7 +15,7 @@
 <div class="accordion" id="accordionPanelsStayOpenExample">
     {% for game in games %}
 
-    {% if game.status == 'NS' %}
+    {% if game.status == 'NS' and not game.is_past_due %}
                 <div class="accordion-item">
     <h2 class="accordion-header" id="headingTwo">
       <button class="accordion-button collapsed bg-primary text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo{{forloop.counter}}" aria-expanded="false" aria-controls="collapseTwo{{forloop.counter}}">
@@ -45,7 +45,8 @@
       </div>
     </div>
   </div>
-    {% else %}
+    
+  {% else %}
     <!--FULL TIME GAMES-->
     <div class="accordion-item">
     <h2 class="accordion-header" id="headingTwo">
@@ -65,9 +66,7 @@
   </div>
   <div class="card-body">
     <h5 class="card-title"><img src="{{game.hTeam.logo}}" style="height:70px" alt="" class="img-thumbnail"> vs <img src="{{game.aTeam.logo}}" style="height:70px" alt="" class="img-thumbnail"></h5>
-    <p class="card-text"> <small>First goal scorer:</small> <strong>{{prediction.goalScorer.name}}</strong> </p>
-    <a href="#" class="btn btn-primary">FULL TIME</a>
-    <a href="/{{game.pk}}">edit</a>
+    <p>PENDING</p>
   </div>
   <div class="card-footer text-muted">
     {{game.matchday}}
