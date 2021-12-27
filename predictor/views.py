@@ -8,6 +8,11 @@ from .models import League, User, Match, MatchPrediction
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, UpdateView, DeleteView, DetailView
 
+#password reset import
+from django.contrib.auth.views import PasswordResetView
+from django.urls import reverse_lazy
+from django.contrib.messages.views import SuccessMessageMixin
+
 #pagination import
 from django.core.paginator import Paginator
 
@@ -319,8 +324,6 @@ def join_league_pin(request, pk):
     return render(request,'predictor/join_league_confirm.html',context)
 
 
-
-
 def leave_league(request,pk):
     league = League.objects.get(id=pk)
     user = request.user
@@ -352,3 +355,15 @@ def user_predictions_list(request, user):
     }
        
     return render(request, 'predictor/user_predictions_list.html', context)
+
+
+
+class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
+    template_name = 'predictor/password_reset.html'
+    email_template_name = 'predictor/password_reset_email.html'
+    subject_template_name = 'predictor/password_reset_subject.txt'
+    success_message = "We've emailed you instructions for setting your password, " \
+                      "if an account exists with the email you entered. You should receive them shortly." \
+                      " If you don't receive an email, " \
+                      "please make sure you've entered the address you registered with, and check your spam folder."
+    success_url = reverse_lazy('predictor:predictor_main')

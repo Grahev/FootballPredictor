@@ -16,8 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include, include
+from django.contrib.auth import views as auth_views
+from predictor.views import ResetPasswordView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include(('predictor.urls','predictor'),namespace='predictor'))
+    path('',include(('predictor.urls','predictor'),namespace='predictor')),
+    
+    path('password-reset/', ResetPasswordView.as_view(), name='password_reset'),
+    path('password-reset-confirm/<uidb64>/<token>/',
+         auth_views.PasswordResetConfirmView.as_view(template_name='predictor/password_reset_confirm.html'),
+         name='password_reset_confirm'),
+    path('password-reset-complete/',
+         auth_views.PasswordResetCompleteView.as_view(template_name='predictor/password_reset_complete.html'),
+         name='password_reset_complete'),
 ]

@@ -12,6 +12,15 @@
 <h2 class="text-center mt-5">
     Welcome to Scores On The Doors football predictor portal.
 </h2>
+
+<!--display messages start-->
+{% for message in messages %}
+    <li class="bg-{{ message.tags }}">
+    {% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}
+    </li>
+{% endfor %}
+<!--end of messages-->
+
 <p class="text-center">Please <a href="{% url 'predictor:login' %}">login</a> if you have account if not <a href="{% url 'predictor:signup' %}">sign up here</a></p>
 
 {% endif %}
