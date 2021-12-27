@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-pl#wegdaq=6gjs^6&f7#q2%0j%6v=2la3%oy%v3d6cnb$&7k#9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'scoresonthedoors.herokuapp.com',
@@ -84,24 +84,24 @@ WSGI_APPLICATION = 'FootballPredictor.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+# if DEBUG:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / 'db.sqlite3',
+#         }
+#     }
+# else:
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dfvr9l5q8v5j84',
+        'USER': 'fbrcygyusfxtsm',
+        'PASSWORD': '9efc1ab3411e727cdeeac987a8bb70e12f9dfb306b1f63541964934367f430a5',
+        'HOST': 'ec2-54-217-232-239.eu-west-1.compute.amazonaws.com',
+        'PORT': '5432',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'dfvr9l5q8v5j84',
-            'USER': 'fbrcygyusfxtsm',
-            'PASSWORD': '9efc1ab3411e727cdeeac987a8bb70e12f9dfb306b1f63541964934367f430a5',
-            'HOST': 'ec2-54-217-232-239.eu-west-1.compute.amazonaws.com',
-            'PORT': '5432',
-        }
-    }
+}
 
 
 
