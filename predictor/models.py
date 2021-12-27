@@ -63,6 +63,12 @@ class Match(models.Model):
         day = self.matchday.split('-')[-1]
         return day
 
+    @property
+    def first_goal(self):
+        first = MatchEvents.objects.filter(match=self).first()
+        f = first.player.name
+        return f
+
 class MatchEvents(models.Model):
     match = models.ForeignKey(Match, on_delete=CASCADE)
     team = models.ForeignKey(Team, on_delete=CASCADE)
