@@ -32,14 +32,14 @@
                             <p class="card-text"> <small>First goal scorer:</small> <strong>{{prediction.goalScorer.name}}</strong> </p>
                             <p>Full Time</p>
                             <p>{{prediction.match.hTeam}} {{prediction.match.hTeamScore}} : {{prediction.match.aTeamScore}} {{prediction.match.aTeam}}</p>
-                            <p>First goal scorer: {{prediction.match.goalScorers.0.name}}</p>
+                            <p>First goal scorer: {{prediction.match.goalScorers.first.name}}</p>
                         </div>
                         <div class="card-footer text-muted">
                           Points: {{prediction.points}}
                         </div>
                         {% else %}
                             <h5 class="card-title">{{prediction.match.hTeam}} {{prediction.homeTeamScore}} : {{prediction.awayTeamScore}} {{prediction.match.aTeam}}</h5>
-                            <p class="card-text"> <small>First goal scorer:</small> <strong>{{prediction.goalScorer.0.name}}</strong> </p>
+                            <p class="card-text"> <small>First goal scorer:</small> <strong>{{prediction.goalScorer.first.name}}</strong> </p>
                             <p>pending</p>
                         </div>
                         <div class="card-footer text-muted">

@@ -350,4 +350,5 @@ def user_predictions_list(request, user):
     context = {
         'predictions': predictions
     }
+       
     return render(request, 'predictor/user_predictions_list.html', context)
