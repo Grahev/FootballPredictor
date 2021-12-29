@@ -346,7 +346,7 @@ def leave_league_confirm(request,pk):
         return redirect('/leagues')
 
 def user_predictions_list(request, user):
-    predictions = MatchPrediction.objects.filter(user__username = user).order_by('-match__status','-match__matchday')
+    predictions = MatchPrediction.objects.filter(user__username = user).order_by('-match__status','-match__date')
     context = {
         'predictions': predictions
     }

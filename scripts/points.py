@@ -32,7 +32,7 @@ def run():
   for prediction in unchacked_predictions:
     points = 0
     goal_scorers = MatchEvents.objects.filter(match=prediction.match).order_by('time')
-    print(goal_scorers)
+    # print(goal_scorers)
    
     try:
       if goal_scorers[0].player.name == prediction.goalScorer.name:
