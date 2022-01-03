@@ -37,12 +37,15 @@ def match_update(event_id):
     events = response[0]['events']
     
     #update match score and status
-    m = Match.objects.get(match_id=event_id)
-    m.hTeamScore = int(hTeamScore)
-    m.aTeamScore = int(aTeamScore)
-    m.status = status
-    m.save()
-    print('match scores updated')
+    if status == 'FT':
+        m = Match.objects.get(match_id=event_id)
+        m.hTeamScore = int(hTeamScore)
+        m.aTeamScore = int(aTeamScore)
+        m.status = status
+        m.save()
+        print(f'match scores updated {m}')
+    else:
+        print('match not finished')
     
     #create goal events for match
     for event in events:
@@ -57,7 +60,8 @@ def match_update(event_id):
         if player_id:
             if e_type == 'Goal':
                 #print(m)
-                m.goalScorers.add(Player.objects.get(player_id=player_id))
+                m.goalScorers.add(Player.objects.get(player_id=player_id)) #add goalscorers to match goalscorers (many to many field)
+                #create event object with all goals 
                 match_event = MatchEvents.objects.create(
                     match = Match.objects.get(match_id=match_id),
                     team = Team.objects.get(id=team_id),

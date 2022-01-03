@@ -34,35 +34,45 @@ def run():
     goal_scorers = MatchEvents.objects.filter(match=prediction.match).order_by('time')
     # print(goal_scorers)
    
-    try:
-      if goal_scorers[0].player.name == prediction.goalScorer.name:
-        points+=3
-        print('3 points for correct first goalscorer')
-      else:
-        for goal in goal_scorers:
-          if goal.player.name == prediction.goalScorer.name:
-            print('1 point for anytime goalscorer')
-            points +=1
-            break
-          else:
-            continue
-    except:
-      points += 0
+    if prediction.match.status == 'FT':
+      print('Match Finished calculate points')
+      try:
+        if goal_scorers[0].player.name == prediction.goalScorer.name:
+          points+=3
+          print('3 points for correct first goalscorer')
+        else:
+          for goal in goal_scorers:
+            if goal.player.name == prediction.goalScorer.name:
+              print('1 point for anytime goalscorer')
+              points +=1
+              break
+            else:
+              continue
+      except:
+        points += 0
 
-    if prediction.homeTeamScore == prediction.match.hTeamScore and prediction.awayTeamScore == prediction.match.aTeamScore:
-      points +=3
-      print('3 points for correct score')
-    else: 
-      match_winner = match_one_x_two(prediction)
-      prediction_winner = prediction_one_x_two(prediction)
-      if match_winner == prediction_winner:
-        points +=1
-        print('1 point for winner')
-      else:
-        points +=0
+      if prediction.homeTeamScore == prediction.match.hTeamScore and prediction.awayTeamScore == prediction.match.aTeamScore:
+        points +=3
+        print('3 points for correct score')
+      else: 
+        match_winner = match_one_x_two(prediction)
+        prediction_winner = prediction_one_x_two(prediction)
+        if match_winner == prediction_winner:
+          points +=1
+          print('1 point for winner')
+        else:
+          points +=0
 
-    p = MatchPrediction.objects.filter(pk=prediction.pk)
-    p.update(points=points, checked=True)
-    print(f'points: {points} - {p} updated')
+      p = MatchPrediction.objects.filter(pk=prediction.pk)
+      p.update(points=points, checked=True)
+      print(f'points: {points} - {p} updated')
+
+    
+    else:
+      print('match status not finished')
+
+    # p = MatchPrediction.objects.filter(pk=prediction.pk)
+    # p.update(points=points, checked=True)
+    # print(f'points: {points} - {p} updated')
 
     
