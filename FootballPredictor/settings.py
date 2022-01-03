@@ -14,7 +14,7 @@ from pathlib import Path
 import os
 import django_heroku
 from boto.s3.connection import S3Connection
-# import config
+import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,11 +23,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-pl#wegdaq=6gjs^6&f7#q2%0j%6v=2la3%oy%v3d6cnb$&7k#9'
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+
+# SECURITY WARNING: keep the secret key used in production secret!
+if DEBUG:
+    SECRET_KEY = config.SECRET_KEY
+else:
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+
+
 
 ALLOWED_HOSTS = [
     'scoresonthedoors.herokuapp.com',
