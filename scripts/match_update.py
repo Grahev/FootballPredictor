@@ -46,6 +46,10 @@ def match_update(event_id):
         print(f'match scores updated {m}')
     else:
         print('match not finished')
+        m = Match.objects.get(match_id=event_id)
+        m.status = status
+        m.save()
+        print(f'match status updated {m}')
     
     #create goal events for match
     for event in events:
